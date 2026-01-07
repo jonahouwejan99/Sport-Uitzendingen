@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Sport Uitzendingen Overzicht</title>
+
+  <style>
+    /* --- PAGE --- */
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1f3c88, #4f83ff);
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+    }
+
+    .header h1 {
+      margin-bottom: 10px;
+      font-size: 34px;
+    }
+
+    .header p {
+      margin-top: 0;
+      opacity: 0.9;
+    }
+
+    /* --- CARD CONTAINER --- */
+    .container {
+      max-width: 950px;
+      margin: 0 auto 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.18);
+    }
+
+    /* --- SEARCH BAR --- */
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .search-box input {
+      padding: 12px 14px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #cfd8ff;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: #4f83ff;
+      box-shadow: 0 0 0 3px rgba(79,131,255,0.2);
+    }
+
+    /* --- TABLE --- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      text-align: left;
+    }
+
+    th {
+      background:#4f83ff;
+      color:white;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: .3px;
+    }
+
+    tr:nth-child(even){
+      background:#f6f8ff;
+    }
+
+    tr:hover {
+      background:#e8edff;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background:#e9efff;
+      color:#2949a7;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      opacity: 0.9;
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📺 Sport — Waar wordt het uitgezonden?</h1>
+    <p>Vind snel waar je favoriete sport wordt uitgezonden</p>
+  </div>
+
+  <div class="container">
+    <div class="search-box">
+      <input
+        type="text"
+        id="search"
+        placeholder="Zoek op sport, competitie of kanaal..."
+      >
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Sport</th>
+          <th>Competitie / Wedstrijd</th>
+          <th>Tijd</th>
+          <th>Kanaal</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p>© 2024 Sport Uitzendingen Overzicht</p>
+  </footer>
+
+  <script>
+    const data = [
+      { sport: "Voetbal", match: "Premier League", time: "20:00", channel: "Ziggo Sport" },
+      { sport: "Formule 1", match: "Grand Prix", time: "15:00", channel: "Viaplay" },
+      { sport: "Tennis", match: "Australian Open", time: "11:00", channel: "Eurosport" },
+      { sport: "Basketbal", match: "NBA", time: "02:00", channel: "NBA League Pass" },
+      { sport: "Wielrennen", match: "Tour de France", time: "13:30", channel: "NOS" },
+      { sport: "Hockey", match: "Hoofdklasse", time: "16:00", channel: "Viaplay" }
+    ];
+
+    const tableBody = document.getElementById("table-body");
+    const search = document.getElementById("search");
+
+    function renderTable(rows) {
+      tableBody.innerHTML = "";
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.sport}</td>
+          <td>${row.match}</td>
+          <td>${row.time}</td>
+          <td>${row.channel}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    search.addEventListener("keyup", () => {
+      const term = search.value.toLowerCase();
+      const filtered = data.filter(item =>
+        item.sport.toLowerCase().includes(term) ||
+        item.match.toLowerCase().includes(term) ||
+        item.channel.toLowerCase().includes(term)
+      );
+      renderTable(filtered);
+    });
+
+    renderTable(data);
+  </script>
+
+</body>
+</html>
