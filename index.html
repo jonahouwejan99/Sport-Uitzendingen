@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Sport Uitzendingen</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1f3c88, #4f83ff);
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto 60px;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.18);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+    }
+
+    th {
+      background:#4f83ff;
+      color:white;
+    }
+
+    tr.sport-row {
+      cursor: pointer;
+      background:#f6f8ff;
+      font-weight: 600;
+    }
+
+    tr.sport-row:hover {
+      background:#e8edff;
+    }
+
+    tr.match-row {
+      background:#ffffff;
+    }
+
+    tr.match-row td {
+      padding-left: 40px;
+      font-size: 14px;
+    }
+
+    .competition {
+      font-weight: 600;
+      color:#2949a7;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📺 Sportuitzendingen</h1>
+    <p>Klik op een sport om wedstrijden te bekijken</p>
+  </div>
+
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Sport / Competitie / Wedstrijd</th>
+          <th>Tijd</th>
+          <th>Kanaal</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+
+<script>
+const data = [
+  {
+    sport: "Voetbal",
+    competitions: [
+      {
+        name: "Premier League",
+        matches: [
+          { match: "Arsenal – Chelsea", time: "18:30", channel: "Ziggo Sport" },
+          { match: "Liverpool – City", time: "21:00", channel: "Ziggo Sport" }
+        ]
+      },
+      {
+        name: "Eredivisie",
+        matches: [
+          { match: "Ajax – PSV", time: "14:30", channel: "ESPN" }
+        ]
+      }
+    ]
+  },
+  {
+    sport: "Formule 1",
+    competitions: [
+      {
+        name: "Grand Prix",
+        matches: [
+          { match: "Race", time: "15:00", channel: "Viaplay" }
+        ]
+      }
+    ]
+  },
+  {
+    sport: "Tennis",
+    competitions: [
+      {
+        name: "Australian Open",
+        matches: [
+          { match: "Nadal – Medvedev", time: "11:00", channel: "Eurosport" }
+        ]
+      }
+    ]
+  }
+];
+
+const tableBody = document.getElementById("table-body");
+
+data.forEach((sportData, index) => {
+  // Sport row
+  const sportRow = document.createElement("tr");
+  sportRow.className = "sport-row";
+  sportRow.innerHTML = `
+    <td>▶ ${sportData.sport}</td>
+    <td></td>
+    <td></td>
+  `;
+  tableBody.appendChild(sportRow);
+
+  const detailRows = [];
+
+  sportData.competitions.forEach(comp => {
+    // Competition row
+    const compRow = document.createElement("tr");
+    compRow.className = "match-row hidden";
+    compRow.innerHTML = `
+      <td class="competition">${comp.name}</td>
+      <td></td>
+      <td></td>
+    `;
+    tableBody.appendChild(compRow);
+    detailRows.push(compRow);
+
+    comp.matches.forEach(match => {
+      const matchRow = document.createElement("tr");
+      matchRow.className = "match-row hidden";
+      matchRow.innerHTML = `
+        <td>– ${match.match}</td>
+        <td>${match.time}</td>
+        <td>${match.channel}</td>
+      `;
+      tableBody.appendChild(matchRow);
+      detailRows.push(matchRow);
+    });
+  });
+
+  // Toggle dropdown
+  sportRow.addEventListener("click", () => {
+    detailRows.forEach(row => row.classList.toggle("hidden"));
+    sportRow.querySelector("td").textContent =
+      sportRow.querySelector("td").textContent.includes("▶")
+      ? `▼ ${sportData.sport}`
+      : `▶ ${sportData.sport}`;
+  });
+});
+</script>
+
+</body>
+</html>
